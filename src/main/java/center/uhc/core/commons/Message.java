@@ -4,8 +4,9 @@ import de.dytanic.cloudnet.common.document.gson.JsonDocument;
 import de.dytanic.cloudnet.driver.CloudNetDriver;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -81,6 +82,19 @@ public class Message {
         CloudNetDriver.getInstance().getMessenger().sendChannelMessage("uc", "network_message_util", new JsonDocument()
         .append("message", message)
         .append("permission", (permission == null ? "" : permission)));
+    }
+
+    public static void soundToNetwork(Sound sound, String permission) {
+        CloudNetDriver.getInstance().getMessenger().sendChannelMessage("uc", "network_sound_util", new JsonDocument()
+        .append("sound", sound.toString())
+        .append("permission", (permission == null ? "" : permission)));
+    }
+
+    public static void sendMessageToPermission(String message, String permission) {
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (p.hasPermission(permission))
+                p.sendMessage(message);
+        }
     }
 
 }
