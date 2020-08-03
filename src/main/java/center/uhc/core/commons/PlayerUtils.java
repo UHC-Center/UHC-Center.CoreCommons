@@ -1,52 +1,40 @@
 package center.uhc.core.commons;
 
+import center.uhc.core.commons.versions.NMSCore;
+import center.uhc.core.commons.versions.NMSVersion;
+import center.uhc.core.commons.versions.UniversalSound;
 import de.dytanic.cloudnet.driver.CloudNetDriver;
 import de.dytanic.cloudnet.ext.bridge.player.ICloudPlayer;
 import de.dytanic.cloudnet.ext.bridge.player.IPlayerManager;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class PlayerUtil {
+public class PlayerUtils {
 
     private static final IPlayerManager playerManager = CloudNetDriver.getInstance().getServicesRegistry().getFirstService(IPlayerManager.class);
 
     public static void broadcastActionbar(String message) {
-        PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + message + "\"}"), (byte) 2);
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+            sendActionbar(player, message);
         }
     }
 
     public static void sendActionbar(Player player, String message) {
-        PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + message + "\"}"), (byte) 2);
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+        NMSCore.getUtils().sendActionbar(player, message);
     }
 
     public static void broadcastTitle(String top, String bottom, int fadeIn, int stay, int fadeOut, boolean chat) {
         try {
-            IChatBaseComponent titleTop = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + top + "\"}");
-            IChatBaseComponent titleBottom = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + bottom + "\"}");
-
-            PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, titleTop);
-            PacketPlayOutTitle subTitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, titleBottom);
-            PacketPlayOutTitle length = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, fadeIn, stay, fadeOut);
-
             for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(length);
-                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(title);
-                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(subTitle);
+                sendTitle(top, bottom, fadeIn, stay, fadeOut, p);
             }
 
             if (chat) {
@@ -58,32 +46,35 @@ public class PlayerUtil {
     }
 
     public static void sendTitle(String top, String bottom, int fadeIn, int stay, int fadeOut, Player player) {
-        try {
-            IChatBaseComponent titleTop = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + top + "\"}");
-            IChatBaseComponent titleBottom = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + bottom + "\"}");
-
-            PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, titleTop);
-            PacketPlayOutTitle subTitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, titleBottom);
-            PacketPlayOutTitle length = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, fadeIn, stay, fadeOut);
-
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(length);
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(title);
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(subTitle);
-        } catch (Exception e) {
-            player.sendMessage(top + " §8» " + bottom);
-        }
+        NMSCore.getUtils().sendTitle(top, bottom, fadeIn, stay, fadeOut, player);
     }
 
+    @Deprecated
     public static void broadcastSound(Sound sound, float volume, float pitch) {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             p.playSound(p.getLocation(), sound, volume, pitch);
         }
     }
 
+    public static void broadcastSound(UniversalSound sound, float volume, float pitch) {
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            playSound(p, sound, volume, pitch);
+        }
+    }
+
+    public static void playSound(Player p, UniversalSound sound, float volume, float pitch) {
+        if (NMSCore.nmsVersion == NMSVersion.ONE_POINT_EIGHT)
+            p.playSound(p.getLocation(), sound.getSound_1_8(), volume, pitch);
+        else if (NMSCore.nmsVersion == NMSVersion.ONE_POINT_SIXTEEN)
+            p.playSound(p.getLocation(), sound.getSound_1_16(), volume, pitch);
+    }
+
+    @Deprecated
     public static void playSound(Player p, Sound sound, float volume, float pitch) {
         p.playSound(p.getLocation(), sound, volume, pitch);
     }
 
+    @Deprecated
     public static void playSoundAt(Location loc, Sound sound, float volume, float pitch) {
         loc.getWorld().playSound(loc, sound, volume, pitch);
     }

@@ -18,5 +18,6 @@ public class PerTickRunnable implements Runnable {
     private JavaPlugin plugin;
     public PerTickRunnable(JavaPlugin plugin) { this.plugin = plugin; }
 
-    @Override public void run(){ Bukkit.getPluginManager().callEvent(new PerTickEvent()); }
+    @Override public void run() { Bukkit.getPluginManager().callEvent(new PerTickEvent()); }
+
 }
