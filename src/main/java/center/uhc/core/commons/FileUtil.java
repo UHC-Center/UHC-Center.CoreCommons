@@ -9,7 +9,7 @@ public class FileUtil {
 
     public static void deleteFolder(String location) {
         File file = new File(location);
-        if (file.exists())
+        if (!file.exists())
             return;
 
         if (file.listFiles() != null) {
@@ -25,7 +25,7 @@ public class FileUtil {
     }
 
     public static void deleteFolder(File file) {
-        if (file.exists())
+        if (!file.exists())
             return;
 
         if (file.listFiles() != null) {
@@ -37,6 +37,13 @@ public class FileUtil {
                 }
             }
         }
+        file.delete();
+    }
+
+    public static void deleteFile(File file) {
+        if (!file.exists())
+            return;
+
         file.delete();
     }
 
