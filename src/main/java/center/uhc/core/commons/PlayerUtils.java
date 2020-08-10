@@ -14,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.UUID;
 
@@ -153,5 +154,11 @@ public class PlayerUtils {
         player.getInventory().setChestplate(null);
         player.getInventory().setLeggings(null);
         player.getInventory().setBoots(null);
+    }
+
+    public static void clearEffects(Player player) {
+        for (PotionEffect e : player.getActivePotionEffects()) {
+            player.removePotionEffect(e.getType());
+        }
     }
 }

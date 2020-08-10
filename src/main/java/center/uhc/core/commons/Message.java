@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 public class Message {
 
     public static String formatSystem(ChatColor primary, String head, String body) { return "" + primary + head + " §8» " + ChatColor.RESET + primary + body; }
+    public static String joinMessage(UCPlayer player) { return "§8[§a+§8] §f" + player.getPrefix() + player.getName(); }
     public static void broadcast(String message) { Bukkit.getServer().broadcastMessage(message); }
     public static void console(String message) { Bukkit.getServer().getConsoleSender().sendMessage(message); }
     public static void commandConsole(String command) { Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command); }
