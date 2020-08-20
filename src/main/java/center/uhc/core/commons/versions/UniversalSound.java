@@ -30,6 +30,8 @@ public enum UniversalSound {
 
     HORSE_DEATH("mob.horse.death", "entity.horse.death"),
 
+    CHICKEN_EGG_POP("mob.chicken.plop", "entity.chicken.egg"),
+
     ITEM_BREAK("random.break", "entity.item.break"),
     LEVEL_UP("random.levelup", "entity.player.levelup"),
     ORB_PICKUP("random.orb", "entity.experience_orb.pickup"),

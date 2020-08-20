@@ -98,4 +98,20 @@ public class Message {
         }
     }
 
+    public static String formatTime(int seconds) {
+        if (seconds < 60)
+            return "" + seconds + " second" + (seconds != 1 ? "s" : "");
+        return formatTimeFull(seconds);
+    }
+
+    public static String formatTimeFull(int seconds) {
+        int s = seconds % 60;
+        int h = seconds / 60;
+        int m = h % 60;
+        h = h / 60;
+        if (h == 0)
+            return (m < 10 ? "0" + m : "" + m) + ":" + (s < 10 ? "0" + s : "" + s);
+        else
+            return (h < 10 ? "0" + h : "" + h) + ":" + (m < 10 ? "0" + m : "" + m) + ":" + (s < 10 ? "0" + s : "" + s);
+    }
 }

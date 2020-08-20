@@ -8,13 +8,17 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.util.Vector;
 
-public class Fireworks {
+public class FireworkUtil {
 
     public static void spawnFireworks(Location loc, boolean flicker, boolean trail, int amount, Color... colours) {
+        spawnFireworks(loc, flicker, trail, amount, 2, colours);
+    }
+
+    public static void spawnFireworks(Location loc, boolean flicker, boolean trail, int amount, int power, Color... colours) {
         Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
         FireworkMeta m = fw.getFireworkMeta();
 
-        m.setPower(2);
+        m.setPower(power);
         m.addEffect(FireworkEffect.builder().withColor(colours).flicker(flicker).trail(trail).build());
 
         fw.setFireworkMeta(m);
