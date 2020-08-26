@@ -52,4 +52,5 @@ public abstract class NMSCore {
     public abstract void registerNMSCommand(JavaPlugin p, String cmdName, BukkitCommand bukkitCommand);
     public abstract double getTps();
     public abstract void setEntityAi(LivingEntity entity, boolean hasAi);
+    public abstract float getAbsorptionHearts(Player player);
 }

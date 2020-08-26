@@ -50,4 +50,9 @@ public class NMSCore_1_8 extends NMSCore {
         EntityLiving handle = ((CraftLivingEntity) entity).getHandle();
         handle.getDataWatcher().watch(15, (byte) (hasAi ? 0 : 1));
     }
+
+    @Override
+    public float getAbsorptionHearts(Player player) {
+        return ((CraftPlayer) player).getHandle().getAbsorptionHearts();
+    }
 }

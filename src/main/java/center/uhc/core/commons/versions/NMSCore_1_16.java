@@ -52,4 +52,9 @@ public class NMSCore_1_16 extends NMSCore {
             mob.setAware(hasAi);
         }
     }
+
+    @Override
+    public float getAbsorptionHearts(Player player) {
+        return ((CraftPlayer) player).getHandle().getAbsorptionHearts();
+    }
 }
