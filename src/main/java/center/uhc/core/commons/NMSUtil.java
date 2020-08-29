@@ -14,6 +14,18 @@ public class NMSUtil {
         }
     }
 
+    public static Class<?> getClass(String prefix, String nmsClassString) {
+        try {
+            String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
+            String name = prefix + version + nmsClassString;
+            Class<?> nmsClass = Class.forName(name);
+            return nmsClass;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void sendPacket(Player player, Object packet) {
         try {
             Object handle = player.getClass().getMethod("getHandle").invoke(player);
